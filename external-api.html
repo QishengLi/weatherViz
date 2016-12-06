@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Weather Visualization</h1>
+      <h3>Dates:</h3>
+      <div class="row dates">        
+        <div class="col-md-3">
+          <a href="#" date="2016-11-01">November 1, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-11-02">November 2, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-11-03">November 3, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-11-04">November 4, 2016</a>
+        </div>
+      </div>
+      <div class="row dates">        
+        <div class="col-md-3">
+          <a href="#" date="2016-11-05">November 5, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-11-06">November 6, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-11-07">November 7, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-11-08">November 8, 2016</a>
+        </div>
+      </div>
+      <div class="row dates">        
+        <div class="col-md-3">
+          <a href="#" date="2016-12-01">December 1, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-12-02">December 2, 2016</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" date="2016-12-08">December 8, 2016</a>
+        </div>
+      </div>
+
+      <h3>Weather on <span class="active-date">2016-11-01</span></h3>
+
+
+      <div class="row" id="summary">        
+        <div class="col-md-2 field">
+          Summary:
+        </div>
+        <div class="col-md-10 value">
+        </div>
+      </div>
+
+      <div class="row" id="range">        
+        <div class="col-md-2 field">
+          Temperature range:
+        </div>
+        <div class="col-md-10 value">
+          30 degrees to 57 degrees
+        </div>
+    </div>
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+    function updateWeather(date) {
+      var url = 'https://api.darksky.net/forecast/aaee9da9d294a97194d5c577435987aa/44.9398,-93.1687,' + date + 'T00:00:00?exclude=currently,hourly,minutely,flags';
+
+      // Using YQL and JSONP
+      $.ajax({
+          url: url,
+          // The name of the callback parameter, as specified by the YQL service
+          jsonp: "callback",       
+          // Tell jQuery we're expecting JSONP
+          dataType: "jsonp",       
+          // Work with the response
+          success: function( response ) {
+            console.log( response ); // server response
+            var data = response.daily.data[0];
+            $("#summary .value").html(data.summary);
+            $("#range .value").html(data.temperatureMin + ' to ' + data.temperatureMax);
+            $("span.active-date").html(date);
+          }
+      });
+
+
+    }
+
+      $().ready(
+        function() { 
+          updateWeather('2016-11-01'); 
+          $(".dates a").on('click', 
+            function () {
+              updateWeather(
+                $(this).attr('date'));
+            });
+        }
+      );
+    </script>
+    </body>
+</html>
